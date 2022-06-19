@@ -1,30 +1,22 @@
 fn main() {
-  // Stack string
-  // str is an immutable sequence of UTF-8 bytes of dynamic length somewhere in memory.
-  let message: &str = "Hello World!";
-
-  // Heap string
-  // String is the dynamic heap string type, like Vec: use it when you need to own or modify your string data.
-  let message_heap: String = String::from("Hello World 2!");
-
-  let message_new = message_heap;
-
-  // Can not use message_heap because is was moved to message_new
-  // println!("{}", message_heap);
-  println!("{}", message_new);
-
-  // You can place on stack only values with static size
-  let result: bool = print_message(message);
-
-  if result {
-    println!("{}", "Message print: successful");
-  } else {
-    println!("{}", "Message print: failed");
-  }
+  // "message" coming into the scope
+  let message = String::from("Hello");
+  // "message" is moved into the print_message function
+  print_message(message);
+  // "message" is no longer valid
 }
+// "message" is going out of the scope
+// but nothing more will happen because it was moved into print_message function
 
-// This function receive a message and print it
-fn print_message(message: &str) -> bool {
-  println!("{}", message);
-  true
+// "a" variable coming into the scope
+fn print_message(a: String) {
+  println!("{}", a);
+  // "c" is coming into the scope and "a" is moved into "c"
+  let _c = a;
+  // "a" is no longer valid
 }
+// "a" is going out of the scope
+// but nothing more will happen because it was moved into "c"
+
+// "c" is going out of the scope and "drop"
+// is called which clears the memory from the heap
