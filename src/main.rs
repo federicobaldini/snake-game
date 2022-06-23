@@ -1,22 +1,12 @@
 fn main() {
-  // "message" coming into the scope
-  let message = String::from("Hello");
-  // "message" is moved into the print_message function
-  print_message(message);
-  // "message" is no longer valid
-}
-// "message" is going out of the scope
-// but nothing more will happen because it was moved into print_message function
+  let message: String = String::from("Hello World!");
+  let new_message: &String = &message;
+  // new_message is not the owner of the data
+  // new_message is borrowing a reference to message
 
-// "a" variable coming into the scope
-fn print_message(a: String) {
-  println!("{}", a);
-  // "c" is coming into the scope and "a" is moved into "c"
-  let _c = a;
-  // "a" is no longer valid
+  println!("{}", message);
+  println!("{}", new_message);
 }
-// "a" is going out of the scope
-// but nothing more will happen because it was moved into "c"
-
-// "c" is going out of the scope and "drop"
-// is called which clears the memory from the heap
+// message and new_message going out of scope
+// new_message is not dropped because it does not have the ownership of what it refers to
+// message is dropped
