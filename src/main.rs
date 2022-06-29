@@ -1,16 +1,25 @@
+enum Country {
+  England,
+  Italy,
+  France,
+  Germany,
+}
+
 struct Person {
   name: String,
   last_name: String,
   age: u8,
+  country: Country,
 }
 
 impl Person {
   // Associated function
-  fn from(name: String, last_name: String, age: u8) -> Person {
+  fn from(name: String, last_name: String, age: u8, country: Country) -> Person {
     Person {
       name,
       last_name,
       age,
+      country,
     }
   }
 
@@ -24,7 +33,12 @@ impl Person {
 }
 
 fn main() {
-  let mut person = Person::from(String::from("Federico"), String::from("Baldini"), 24);
+  let mut person = Person::from(
+    String::from("Federico"),
+    String::from("Baldini"),
+    24,
+    Country::Italy,
+  );
 
   person.set_name("Matteo".to_string());
 
