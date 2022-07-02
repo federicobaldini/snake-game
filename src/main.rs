@@ -1,25 +1,25 @@
-enum Country {
-  England,
-  Italy,
-  France,
-  Germany,
+#[derive(Debug)]
+
+enum PersonId {
+  IdentityCard(String),
+  Passport(String),
 }
 
 struct Person {
   name: String,
   last_name: String,
   age: u8,
-  country: Country,
+  id: PersonId,
 }
 
 impl Person {
   // Associated function
-  fn from(name: String, last_name: String, age: u8, country: Country) -> Person {
+  fn from(name: String, last_name: String, age: u8, id: PersonId) -> Person {
     Person {
       name,
       last_name,
       age,
-      country,
+      id,
     }
   }
 
@@ -30,6 +30,13 @@ impl Person {
   fn set_name(&mut self, new_name: String) {
     self.name = new_name;
   }
+
+  fn display_info(&self) {
+    println!(
+      "{} {} {} {:?}",
+      self.name, self.last_name, self.age, self.id
+    );
+  }
 }
 
 fn main() {
@@ -37,10 +44,28 @@ fn main() {
     String::from("Federico"),
     String::from("Baldini"),
     24,
-    Country::Italy,
+    PersonId::IdentityCard(String::from("12345678")),
   );
 
   person.set_name("Matteo".to_string());
+  person.display_info();
 
-  println!("{} {} {}", person.name, person.last_name, person.age);
+  check_person_id(person.id);
+}
+
+fn check_person_id(id: PersonId) {
+  if let PersonId::IdentityCard(id_card_code) = &id {
+    println!("It's matching Identity Card - {}", id_card_code);
+  } else {
+    println!("It doesn't match!");
+  }
+
+  match id {
+    PersonId::IdentityCard(id_card_code) => {
+      println!("Identity Card code - {}", id_card_code)
+    }
+    PersonId::Passport(passport_code) => {
+      println!("Identity Card code - {}", passport_code)
+    }
+  }
 }
