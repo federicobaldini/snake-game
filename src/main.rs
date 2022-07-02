@@ -1,3 +1,8 @@
+// Trait
+trait Log {
+  fn display_info(&self);
+}
+
 #[derive(Debug)]
 
 enum PersonId {
@@ -10,6 +15,15 @@ struct Person {
   last_name: String,
   age: u8,
   id: PersonId,
+}
+
+impl Log for Person {
+  fn display_info(&self) {
+    println!(
+      "{} {} {} {:?}",
+      self.name, self.last_name, self.age, self.id
+    )
+  }
 }
 
 impl Person {
@@ -30,13 +44,6 @@ impl Person {
   fn set_name(&mut self, new_name: String) {
     self.name = new_name;
   }
-
-  fn display_info(&self) {
-    println!(
-      "{} {} {} {:?}",
-      self.name, self.last_name, self.age, self.id
-    );
-  }
 }
 
 fn main() {
@@ -49,23 +56,7 @@ fn main() {
 
   person.set_name("Matteo".to_string());
   person.display_info();
-
-  check_person_id(person.id);
 }
 
-fn check_person_id(id: PersonId) {
-  if let PersonId::IdentityCard(id_card_code) = &id {
-    println!("It's matching Identity Card - {}", id_card_code);
-  } else {
-    println!("It doesn't match!");
-  }
 
-  match id {
-    PersonId::IdentityCard(id_card_code) => {
-      println!("Identity Card code - {}", id_card_code)
-    }
-    PersonId::Passport(passport_code) => {
-      println!("Identity Card code - {}", passport_code)
-    }
-  }
 }
