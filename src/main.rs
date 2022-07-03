@@ -1,6 +1,4 @@
-use snake_game::Log;
-use snake_game::Person;
-use snake_game::PersonId;
+use snake_game::testing_lib::{Log, Person, PersonId};
 
 fn main() {
   let mut person = Person::from(
