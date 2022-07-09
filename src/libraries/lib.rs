@@ -1,14 +1,27 @@
 pub mod testing_lib {
 
+  use std::fmt;
+
   pub trait Log {
     fn display_info(&self);
   }
 
-  #[derive(Debug)]
-
   pub enum PersonId {
     IdentityCard(String),
     Passport(String),
+  }
+
+  impl fmt::Display for PersonId {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+      match self {
+        PersonId::IdentityCard(document_code) => {
+          write!(f, "{}", document_code)
+        }
+        PersonId::Passport(document_code) => {
+          write!(f, "{}", document_code)
+        }
+      }
+    }
   }
 
   pub struct Person {
@@ -20,10 +33,7 @@ pub mod testing_lib {
 
   impl Log for Person {
     fn display_info(&self) {
-      println!(
-        "{} {} {} {:?}",
-        self.name, self.last_name, self.age, self.id
-      )
+      println!("{} {} {} {}", self.name, self.last_name, self.age, self.id)
     }
   }
 
