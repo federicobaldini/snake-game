@@ -1,4 +1,6 @@
-use snake_game::testing_lib::{Log, Person, PersonId};
+mod libraries;
+
+use libraries::testing_lib::{Log, Person, PersonId};
 
 fn main() {
   let mut person = Person::from(
