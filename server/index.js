@@ -2,5 +2,8 @@ import init, { World } from "snake-game";
 
 init().then(() => {
   const gameWorld = World.new();
-  console.log(gameWorld.width());
+  const canvas = document.getElementById("snake-game-canvas");
+  if (canvas) {
+    const canvasContext = canvas.getContext("2d");
+  }
 });
