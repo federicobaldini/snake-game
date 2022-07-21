@@ -43,5 +43,16 @@ init().then(() => {
       CELL_SIZE,
       gameWorld.snake_head_index()
     );
+    setInterval(() => {
+      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+      drawWorld(canvasContext, gameWorldWidth, CELL_SIZE);
+      drawSnake(
+        canvasContext,
+        gameWorldWidth,
+        CELL_SIZE,
+        gameWorld.snake_head_index()
+      );
+      gameWorld.move_snake_right();
+    }, 500);
   }
 });
