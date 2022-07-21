@@ -28,7 +28,7 @@ const drawSnake = (context, worldWidth, cellSize, snakeHeadIndex) => {
 init().then(() => {
   const CELL_SIZE = 20;
 
-  const gameWorld = World.new();
+  const gameWorld = World.new(8);
   const gameWorldWidth = gameWorld.width();
 
   const canvas = document.getElementById("snake-game-canvas");
