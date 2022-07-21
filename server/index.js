@@ -16,6 +16,15 @@ const drawWorld = (context, worldWidth, cellSize) => {
   context.stroke();
 };
 
+const drawSnake = (context, worldWidth, cellSize, snakeHeadIndex) => {
+  const column = snakeHeadIndex % worldWidth;
+  const row = Math.floor(snakeHeadIndex / worldWidth);
+
+  context.beginPath();
+  context.fillRect(column * cellSize, row * cellSize, cellSize, cellSize);
+  context.stroke();
+};
+
 init().then(() => {
   const CELL_SIZE = 20;
 
@@ -28,5 +37,11 @@ init().then(() => {
     canvas.width = gameWorldWidth * CELL_SIZE;
     canvas.height = gameWorldWidth * CELL_SIZE;
     drawWorld(canvasContext, gameWorldWidth, CELL_SIZE);
+    drawSnake(
+      canvasContext,
+      gameWorldWidth,
+      CELL_SIZE,
+      gameWorld.snake_head_index()
+    );
   }
 });
