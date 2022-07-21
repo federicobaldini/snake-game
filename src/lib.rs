@@ -42,6 +42,14 @@ impl World {
   pub fn snake_head_index(&self) -> usize {
     self.snake.body[0].0
   }
+
+  pub fn move_snake_right(&mut self) {
+    if self.snake_head_index() == (self.size - 1) {
+      self.snake.body[0].0 = 0;
+    } else {
+      self.snake.body[0].0 = self.snake_head_index() + 1;
+    }
+  }
 }
 
 // wasm-pack build --target web
