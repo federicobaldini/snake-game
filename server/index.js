@@ -25,6 +25,27 @@ const drawSnake = (context, worldWidth, cellSize, snakeHeadIndex) => {
   context.stroke();
 };
 
+const createGameWorld = (context, worldWidth, cellSize, snakeHeadIndex) => {
+  drawWorld(context, worldWidth, cellSize);
+  drawSnake(context, worldWidth, cellSize, snakeHeadIndex);
+};
+
+const updateGameWorld = (canvas, context, worldWidth, cellSize, gameWorld) => {
+  setTimeout(() => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    gameWorld.move_snake_right();
+    createGameWorld(
+      context,
+      worldWidth,
+      cellSize,
+      gameWorld.snake_head_index()
+    );
+    requestAnimationFrame(() =>
+      updateGameWorld(canvas, context, worldWidth, cellSize, gameWorld)
+    );
+  }, 100);
+};
+
 init().then(() => {
   const CELL_SIZE = 20;
 
@@ -36,23 +57,20 @@ init().then(() => {
     const canvasContext = canvas.getContext("2d");
     canvas.width = gameWorldWidth * CELL_SIZE;
     canvas.height = gameWorldWidth * CELL_SIZE;
-    drawWorld(canvasContext, gameWorldWidth, CELL_SIZE);
-    drawSnake(
+
+    createGameWorld(
       canvasContext,
       gameWorldWidth,
       CELL_SIZE,
       gameWorld.snake_head_index()
     );
-    setInterval(() => {
-      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-      drawWorld(canvasContext, gameWorldWidth, CELL_SIZE);
-      drawSnake(
-        canvasContext,
-        gameWorldWidth,
-        CELL_SIZE,
-        gameWorld.snake_head_index()
-      );
-      gameWorld.move_snake_right();
-    }, 500);
+
+    updateGameWorld(
+      canvas,
+      canvasContext,
+      gameWorldWidth,
+      CELL_SIZE,
+      gameWorld
+    );
   }
 });
