@@ -23,7 +23,7 @@ impl Snake {
   fn new(spawn_index: usize) -> Snake {
     Snake {
       body: vec![SnakeCell(spawn_index)],
-      direction: Direction::Left,
+      direction: Direction::Up,
     }
   }
 }
@@ -54,16 +54,25 @@ impl World {
   }
 
   pub fn move_snake(&mut self) {
-    let row = self.snake_head_index() / self.width;
+    let actual_row = self.snake_head_index() / self.width;
+    let actual_column = self.snake_head_index() % self.width;
 
     match &self.snake.direction {
       Direction::Right => {
-        let next_column = (self.snake_head_index() + 1) % self.width;
-        self.snake.body[0].0 = (row * self.width) + next_column;
+        let next_column = (actual_column + 1) % self.width;
+        self.snake.body[0].0 = (actual_row * self.width) + next_column;
       }
       Direction::Left => {
-        let next_column = (self.snake_head_index() - 1) % self.width;
-        self.snake.body[0].0 = (row * self.width) + next_column;
+        let next_column = (actual_column - 1) % self.width;
+        self.snake.body[0].0 = (actual_row * self.width) + next_column;
+      }
+      Direction::Up => {
+        let next_row = (actual_row - 1) % self.width;
+        self.snake.body[0].0 = (next_row * self.width) + actual_column;
+      }
+      Direction::Down => {
+        let next_row = (actual_row + 1) % self.width;
+        self.snake.body[0].0 = (next_row * self.width) + actual_column;
       }
       _ => (),
     }
