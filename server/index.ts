@@ -51,9 +51,10 @@ const updateGameWorld = (
   cellSize: number,
   gameWorld: World
 ): void => {
+  const frame_per_second: number = 5;
   setTimeout(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    gameWorld.move_snake_right();
+    gameWorld.move_snake();
     createGameWorld(
       context,
       worldWidth,
@@ -63,7 +64,7 @@ const updateGameWorld = (
     requestAnimationFrame(() =>
       updateGameWorld(canvas, context, worldWidth, cellSize, gameWorld)
     );
-  }, 100);
+  }, 1000 / frame_per_second);
 };
 
 init().then(() => {
