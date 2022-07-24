@@ -54,14 +54,18 @@ impl World {
   }
 
   pub fn move_snake(&mut self) {
-    if self.snake_head_index() == (self.size - 1) {
-      self.snake.body[0].0 = 0;
-    } else {
-      match &self.snake.direction {
-        Direction::Right => self.snake.body[0].0 = self.snake_head_index() + 1,
-        Direction::Left => self.snake.body[0].0 = self.snake_head_index() - 1,
-        _ => (),
+    let row = self.snake_head_index() / self.width;
+
+    match &self.snake.direction {
+      Direction::Right => {
+        let next_column = (self.snake_head_index() + 1) % self.width;
+        self.snake.body[0].0 = (row * self.width) + next_column;
       }
+      Direction::Left => {
+        let next_column = (self.snake_head_index() - 1) % self.width;
+        self.snake.body[0].0 = (row * self.width) + next_column;
+      }
+      _ => (),
     }
   }
 }
