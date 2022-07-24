@@ -69,8 +69,10 @@ const updateGameWorld = (
 
 init().then(() => {
   const CELL_SIZE: number = 20;
+  const WORLD_WIDTH: number = 8;
 
-  const gameWorld: World = World.new(8);
+  const snake_spawn_index: number = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
+  const gameWorld: World = World.new(WORLD_WIDTH, snake_spawn_index);
   const gameWorldWidth: number = gameWorld.width();
 
   const canvas: HTMLCanvasElement = document.getElementById(
