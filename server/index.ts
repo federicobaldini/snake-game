@@ -1,4 +1,4 @@
-import init, { World } from "snake-game";
+import init, { Direction, World } from "snake-game";
 
 const drawWorld = (
   context: CanvasRenderingContext2D,
@@ -74,6 +74,27 @@ init().then(() => {
   const snake_spawn_index: number = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
   const gameWorld: World = World.new(WORLD_WIDTH, snake_spawn_index);
   const gameWorldWidth: number = gameWorld.width();
+
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    switch (event.code) {
+      case "ArrowUp":
+      case "KeyW":
+        gameWorld.change_snake_direction(Direction.Up);
+        break;
+      case "ArrowRight":
+      case "KeyD":
+        gameWorld.change_snake_direction(Direction.Right);
+        break;
+      case "ArrowDown":
+      case "KeyS":
+        gameWorld.change_snake_direction(Direction.Down);
+        break;
+      case "ArrowLeft":
+      case "KeyA":
+        gameWorld.change_snake_direction(Direction.Left);
+        break;
+    }
+  });
 
   const canvas: HTMLCanvasElement = document.getElementById(
     "snake-game-canvas"
