@@ -4,8 +4,9 @@ use wee_alloc::WeeAlloc;
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
+#[wasm_bindgen]
 #[derive(PartialEq)]
-enum Direction {
+pub enum Direction {
   Up,
   Right,
   Down,
@@ -64,7 +65,6 @@ impl World {
   fn set_snake_head_index(&mut self, index: usize) {
     self.snake.body[0].0 = index
   }
-
   pub fn move_snake(&mut self) {
     let (actual_row, actual_column) = self.index_to_cell(self.snake_head_index());
     let (next_row, next_column) = match &self.snake.direction {
@@ -75,6 +75,10 @@ impl World {
       _ => (actual_row, actual_column),
     };
     self.set_snake_head_index(self.cell_to_index(next_row, next_column));
+  }
+
+  pub fn change_snake_direction(&mut self, direction: Direction) {
+    self.snake.direction = direction;
   }
 }
 
