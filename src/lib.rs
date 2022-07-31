@@ -21,9 +21,15 @@ struct Snake {
 }
 
 impl Snake {
-  fn new(spawn_index: usize) -> Snake {
+  fn new(spawn_index: usize, size: usize) -> Snake {
+    let mut body = vec![];
+
+    for i in 0..size {
+      body.push(SnakeCell(spawn_index - i));
+    }
+
     Snake {
-      body: vec![SnakeCell(spawn_index)],
+      body,
       direction: Direction::Up,
     }
   }
@@ -42,7 +48,7 @@ impl World {
     World {
       width,
       size: width * width,
-      snake: Snake::new(snake_index),
+      snake: Snake::new(snake_index, 3),
     }
   }
 
