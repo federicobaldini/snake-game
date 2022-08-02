@@ -67,13 +67,24 @@ const updateGameWorld = (
   }, 1000 / frame_per_second);
 };
 
-init().then(() => {
+init().then((wasm) => {
   const CELL_SIZE: number = 20;
   const WORLD_WIDTH: number = 8;
 
   const snake_spawn_index: number = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
   const gameWorld: World = World.new(WORLD_WIDTH, snake_spawn_index);
   const gameWorldWidth: number = gameWorld.width();
+
+  const snakeCellPointer: number = gameWorld.snake_cells();
+  const snakeLength: number = gameWorld.snake_length();
+
+  const snakeCells = new Uint32Array(
+    wasm.memory.buffer,
+    snakeCellPointer,
+    snakeLength
+  );
+
+  console.log(snakeCells);
 
   document.addEventListener("keydown", (event: KeyboardEvent) => {
     switch (event.code) {
