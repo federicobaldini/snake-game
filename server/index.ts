@@ -32,9 +32,11 @@ const drawSnake = (
     gameWorld.snake_length()
   );
 
-  snakeCells.forEach((snakeCellIndex) => {
+  snakeCells.forEach((snakeCellIndex, index) => {
     const column = snakeCellIndex % gameWorld.width();
     const row = Math.floor(snakeCellIndex / gameWorld.width());
+
+    context.fillStyle = !index ? "#7979db" : "#000000";
 
     context.beginPath();
     context.fillRect(column * cellSize, row * cellSize, cellSize, cellSize);
