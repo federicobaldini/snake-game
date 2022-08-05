@@ -83,13 +83,37 @@ impl World {
 
     return match &self.snake.direction {
       Direction::Right => {
-        SnakeCell((actual_row * self.width) + (self.snake_head_index() + 1) % self.width)
+        let treshhold = (actual_row + 1) * self.width;
+        if self.snake_head_index() + 1 == treshhold {
+          SnakeCell(treshhold - self.width)
+        } else {
+          SnakeCell(self.snake_head_index() + 1)
+        }
       }
       Direction::Left => {
-        SnakeCell((actual_row * self.width) + (self.snake_head_index() - 1) % self.width)
+        let treshhold = actual_row * self.width;
+        if self.snake_head_index() == treshhold {
+          SnakeCell(treshhold + (self.width - 1))
+        } else {
+          SnakeCell(self.snake_head_index() - 1)
+        }
       }
-      Direction::Up => SnakeCell((self.snake_head_index() - self.width) % self.size),
-      Direction::Down => SnakeCell((self.snake_head_index() + self.width) % self.size),
+      Direction::Up => {
+        let treshhold = self.snake_head_index() - (actual_row * self.width);
+        if self.snake_head_index() == treshhold {
+          SnakeCell((self.size - self.width) + treshhold)
+        } else {
+          SnakeCell(self.snake_head_index() - self.width)
+        }
+      }
+      Direction::Down => {
+        let treshhold = self.snake_head_index() + ((self.width - actual_row) * self.width);
+        if self.snake_head_index() + self.width == treshhold {
+          SnakeCell(treshhold - ((actual_row + 1) * self.width))
+        } else {
+          SnakeCell(self.snake_head_index() + self.width)
+        }
+      }
     };
   }
 
