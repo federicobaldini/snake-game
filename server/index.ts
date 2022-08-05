@@ -61,7 +61,7 @@ const updateGameWorld = (
   gameWorld: World,
   wasm: InitOutput
 ): void => {
-  const frame_per_second: number = 5;
+  const frame_per_second: number = 10;
   setTimeout(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     gameWorld.move_snake();
@@ -74,7 +74,7 @@ const updateGameWorld = (
 
 init().then((wasm: InitOutput) => {
   const CELL_SIZE: number = 20;
-  const WORLD_WIDTH: number = 8;
+  const WORLD_WIDTH: number = 16;
 
   const snake_spawn_index: number = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
   const gameWorld: World = World.new(WORLD_WIDTH, snake_spawn_index);
