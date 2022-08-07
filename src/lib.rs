@@ -13,7 +13,7 @@ pub enum Direction {
   Left,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub struct SnakeCell(usize);
 
 struct Snake {
@@ -41,6 +41,7 @@ pub struct World {
   width: usize,
   size: usize,
   snake: Snake,
+  next_cell: Option<SnakeCell>,
 }
 
 #[wasm_bindgen]
@@ -50,6 +51,7 @@ impl World {
       width,
       size: width * width,
       snake: Snake::new(snake_index, 3),
+      next_cell: None,
     }
   }
 
@@ -79,8 +81,16 @@ impl World {
     let initial_snake_body = self.snake.body.clone();
     let snake_body_length = self.snake.body.len();
 
-    // Move head cell
-    self.set_snake_head_index(self.generate_next_snake_cell(&self.snake.direction));
+    match self.next_cell {
+      Some(cell) => {
+        // Move head cell
+        self.set_snake_head_index(cell);
+        self.next_cell = None;
+      }
+      None => {
+        self.set_snake_head_index(self.generate_next_snake_cell(&self.snake.direction));
+      }
+    }
 
     // Move body cells
     for i in 1..snake_body_length {
@@ -134,6 +144,7 @@ impl World {
       return;
     }
 
+    self.next_cell = Some(next_cell);
     self.snake.direction = direction;
   }
 }
