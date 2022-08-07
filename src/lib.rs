@@ -80,7 +80,7 @@ impl World {
     let snake_body_length = self.snake.body.len();
 
     // Move head cell
-    self.set_snake_head_index(self.generate_next_snake_cell());
+    self.set_snake_head_index(self.generate_next_snake_cell(&self.snake.direction));
 
     // Move body cells
     for i in 1..snake_body_length {
@@ -88,10 +88,10 @@ impl World {
     }
   }
 
-  fn generate_next_snake_cell(&self) -> SnakeCell {
+  fn generate_next_snake_cell(&self, direction: &Direction) -> SnakeCell {
     let actual_row = self.snake_head_index() / self.width;
 
-    return match &self.snake.direction {
+    return match direction {
       Direction::Right => {
         let treshhold = (actual_row + 1) * self.width;
         if self.snake_head_index() + 1 == treshhold {
@@ -128,6 +128,12 @@ impl World {
   }
 
   pub fn change_snake_direction(&mut self, direction: Direction) {
+    let next_cell = self.generate_next_snake_cell(&direction);
+
+    if self.snake.body[1].0 == next_cell.0 {
+      return;
+    }
+
     self.snake.direction = direction;
   }
 }
