@@ -20,6 +20,20 @@ const drawWorld = (
   context.stroke();
 };
 
+const drawReward = (
+  context: CanvasRenderingContext2D,
+  gameWorld: World,
+  cellSize: number
+) => {
+  const column = gameWorld.reward_cell() % gameWorld.width();
+  const row = Math.floor(gameWorld.reward_cell() / gameWorld.width());
+
+  context.beginPath();
+  context.fillStyle = "#FF0000";
+  context.fillRect(column * cellSize, row * cellSize, cellSize, cellSize);
+  context.stroke();
+};
+
 const drawSnake = (
   context: CanvasRenderingContext2D,
   gameWorld: World,
@@ -52,6 +66,7 @@ const createGameWorld = (
 ): void => {
   drawWorld(context, gameWorld, cellSize);
   drawSnake(context, gameWorld, cellSize, wasm);
+  drawReward(context, gameWorld, cellSize);
 };
 
 const updateGameWorld = (
