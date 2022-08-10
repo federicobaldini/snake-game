@@ -4,6 +4,11 @@ use wee_alloc::WeeAlloc;
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
+#[wasm_bindgen(module = "/server/utils/date.ts")]
+extern "C" {
+  fn now() -> usize;
+}
+
 #[wasm_bindgen]
 #[derive(PartialEq)]
 pub enum Direction {
@@ -53,7 +58,7 @@ impl World {
       size: width * width,
       snake: Snake::new(snake_index, 3),
       next_cell: None,
-      reward_cell: 10,
+      reward_cell: now() % (width * width),
     }
   }
 
