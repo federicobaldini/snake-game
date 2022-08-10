@@ -4,9 +4,9 @@ use wee_alloc::WeeAlloc;
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
-#[wasm_bindgen(module = "/server/utils/date.ts")]
+#[wasm_bindgen(module = "/server/utils/random.ts")]
 extern "C" {
-  fn now() -> usize;
+  fn random(max: usize) -> usize;
 }
 
 #[wasm_bindgen]
@@ -58,7 +58,7 @@ impl World {
       size: width * width,
       snake: Snake::new(snake_index, 3),
       next_cell: None,
-      reward_cell: now() % (width * width),
+      reward_cell: random(width * width),
     }
   }
 
