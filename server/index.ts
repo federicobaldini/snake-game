@@ -1,4 +1,5 @@
 import init, { Direction, InitOutput, World } from "snake-game";
+import { random } from "./utils/random";
 
 const drawWorld = (
   context: CanvasRenderingContext2D,
@@ -91,7 +92,7 @@ init().then((wasm: InitOutput) => {
   const CELL_SIZE: number = 20;
   const WORLD_WIDTH: number = 16;
 
-  const snake_spawn_index: number = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
+  const snake_spawn_index: number = random(WORLD_WIDTH * WORLD_WIDTH);
   const gameWorld: World = World.new(WORLD_WIDTH, snake_spawn_index);
   const gameWorldWidth: number = gameWorld.width();
 
