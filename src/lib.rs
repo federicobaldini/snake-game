@@ -125,8 +125,12 @@ impl World {
     }
 
     if self.reward_cell == self.snake_head_index() {
+      if self.snake_length() < self.size {
+        self.reward_cell = World::generate_reward_cell(self.size, &self.snake.body)
+      } else {
+        self.reward_cell = self.size + 1
+      }
       self.snake.body.push(SnakeCell(self.snake.body[1].0));
-      self.reward_cell = World::generate_reward_cell(self.size, &self.snake.body) 
     }
   }
 
