@@ -18,7 +18,7 @@ pub enum Direction {
   Left,
 }
 
-#[derive(Clone, Copy)]
+#[derive(PartialEq, Clone, Copy)]
 pub struct SnakeCell(usize);
 
 struct Snake {
@@ -53,12 +53,24 @@ pub struct World {
 #[wasm_bindgen]
 impl World {
   pub fn new(width: usize, snake_index: usize) -> World {
+
+    let snake = Snake::new(snake_index, 3);
+    let size = width*width;
+    let mut reward_cell;
+
+    loop {
+      reward_cell = random(size);
+      if !snake.body.contains(&SnakeCell(reward_cell)) {
+        break;
+      }
+    }
+
     World {
       width,
-      size: width * width,
-      snake: Snake::new(snake_index, 3),
+      size,
+      snake,
       next_cell: None,
-      reward_cell: random(width * width),
+      reward_cell,
     }
   }
 
