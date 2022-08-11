@@ -53,9 +53,8 @@ pub struct World {
 #[wasm_bindgen]
 impl World {
   pub fn new(width: usize, snake_index: usize) -> World {
-
     let snake = Snake::new(snake_index, 3);
-    let size = width*width;
+    let size = width * width;
     let mut reward_cell;
 
     loop {
@@ -118,6 +117,10 @@ impl World {
     // Move body cells
     for i in 1..snake_body_length {
       self.snake.body[i] = SnakeCell(initial_snake_body[i - 1].0)
+    }
+
+    if self.reward_cell == self.snake_head_index() {
+      self.snake.body.push(SnakeCell(self.snake.body[1].0));
     }
   }
 
