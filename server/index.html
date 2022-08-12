@@ -17,10 +17,49 @@
         align-items: center;
         flex-direction: column;
       }
+      .snake-game__actions-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 0 0 1rem 0;
+      }
+      .snake-game__play-button {
+        appearance: none;
+        width: 6rem;
+        border-radius: 8px;
+        padding: 0.5rem 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        outline: none;
+        background: #e74c3c;
+        color: #ffffff;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .snake-game__play-button:hover {
+        background: #2ecc71;
+      }
+      .snake-game__label {
+        margin: 1rem 0;
+      }
     </style>
   </head>
   <body>
     <div class="snake-game__canvas-container">
+      <div class="snake-game__actions-container">
+        <label class="snake-game__label">
+          <span>
+            Staus:
+          </span>
+          <span id="game-status">
+            None
+          </span>
+        </label>
+        <button class="snake-game__play-button">PLAY!</button>
+      </div>
       <canvas id="snake-game-canvas"></canvas>
     </div>
     <script src="./bootstrap.js"></script>
