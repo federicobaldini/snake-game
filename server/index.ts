@@ -59,6 +59,14 @@ const drawSnake = (
   });
 };
 
+const drawGameStatus = (gameWorld: World): void => {
+  const gameStatus: HTMLLabelElement = document.getElementById(
+    "game-status"
+  ) as HTMLLabelElement;
+
+  gameStatus.textContent = gameWorld.status_text();
+}
+
 const createGameWorld = (
   context: CanvasRenderingContext2D,
   gameWorld: World,
@@ -68,6 +76,7 @@ const createGameWorld = (
   drawWorld(context, gameWorld, cellSize);
   drawSnake(context, gameWorld, cellSize, wasm);
   drawReward(context, gameWorld, cellSize);
+  drawGameStatus(gameWorld);
 };
 
 const updateGameWorld = (
@@ -75,15 +84,16 @@ const updateGameWorld = (
   context: CanvasRenderingContext2D,
   cellSize: number,
   gameWorld: World,
-  wasm: InitOutput
+  wasm: InitOutput,
+  updateTimeout: { timeout: NodeJS.Timeout }
 ): void => {
   const frame_per_second: number = 10;
-  setTimeout(() => {
+  updateTimeout.timeout = setTimeout(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     gameWorld.move_snake();
     createGameWorld(context, gameWorld, cellSize, wasm);
     requestAnimationFrame(() =>
-      updateGameWorld(canvas, context, cellSize, gameWorld, wasm)
+      updateGameWorld(canvas, context, cellSize, gameWorld, wasm, updateTimeout)
     );
   }, 1000 / frame_per_second);
 };
@@ -120,6 +130,7 @@ init().then((wasm: InitOutput) => {
   const canvas: HTMLCanvasElement = document.getElementById(
     "snake-game-canvas"
   ) as HTMLCanvasElement;
+
   if (canvas) {
     const canvasContext: CanvasRenderingContext2D = canvas.getContext("2d");
     canvas.width = gameWorldWidth * CELL_SIZE;
@@ -127,6 +138,40 @@ init().then((wasm: InitOutput) => {
 
     createGameWorld(canvasContext, gameWorld, CELL_SIZE, wasm);
 
-    updateGameWorld(canvas, canvasContext, CELL_SIZE, gameWorld, wasm);
+    const gameControlButton: HTMLButtonElement = document.getElementById(
+      "play-button"
+    ) as HTMLButtonElement;
+    const updateTimeout: { timeout: NodeJS.Timeout } = {
+      timeout: undefined,
+    };
+
+    gameControlButton.addEventListener("click", (_) => {
+      if (gameWorld.status() === undefined) {
+        gameWorld.start_game();
+        updateGameWorld(
+          canvas,
+          canvasContext,
+          CELL_SIZE,
+          gameWorld,
+          wasm,
+          updateTimeout
+        );
+      } else if (gameWorld.status() !== 2) {
+        gameWorld.start_game();
+        clearTimeout(updateTimeout.timeout);
+        updateGameWorld(
+          canvas,
+          canvasContext,
+          CELL_SIZE,
+          gameWorld,
+          wasm,
+          updateTimeout
+        );
+        gameControlButton.textContent = "PAUSE!";
+      } else {
+        gameWorld.pause_game();
+        gameControlButton.textContent = "PLAY!";
+      }
+    });
   }
 });
