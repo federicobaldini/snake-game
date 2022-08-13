@@ -19,10 +19,12 @@ pub enum Direction {
 }
 
 #[wasm_bindgen]
+#[derive(PartialEq, Clone, Copy)]
 pub enum GameStatus {
   Win,
   Lose,
   Play,
+  Pause,
 }
 
 #[derive(PartialEq, Clone, Copy)]
@@ -91,6 +93,20 @@ impl World {
     self.width
   }
 
+  pub fn status(&self) -> Option<GameStatus> {
+    self.status
+  }
+
+  pub fn status_text(&self) -> String {
+    match self.status {
+      Some(GameStatus::Win) => String::from("You Win!"),
+      Some(GameStatus::Lose) => String::from("You Lose!"),
+      Some(GameStatus::Play) => String::from("Play"),
+      Some(GameStatus::Pause) => String::from("Pause"),
+      None => String::from("Start your game!"),
+    }
+  }
+
   pub fn reward_cell(&self) -> usize {
     self.reward_cell
   }
@@ -101,6 +117,14 @@ impl World {
 
   fn set_snake_head_index(&mut self, cell: SnakeCell) {
     self.snake.body[0] = cell
+  }
+
+  pub fn start_game(&mut self) {
+    self.status = Some(GameStatus::Play);
+  }
+
+  pub fn pause_game(&mut self) {
+    self.status = Some(GameStatus::Pause);
   }
 
   pub fn snake_length(&self) -> usize {
