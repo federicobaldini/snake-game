@@ -47,16 +47,21 @@ const drawSnake = (
     gameWorld.snake_length()
   );
 
-  snakeCells.forEach((snakeCellIndex, index) => {
-    const column = snakeCellIndex % gameWorld.width();
-    const row = Math.floor(snakeCellIndex / gameWorld.width());
+  snakeCells
+    .filter(
+      (snakeCellIndex, index) =>
+        !(index > 0 && snakeCellIndex === snakeCells[0])
+    )
+    .forEach((snakeCellIndex, index) => {
+      const column = snakeCellIndex % gameWorld.width();
+      const row = Math.floor(snakeCellIndex / gameWorld.width());
 
-    context.fillStyle = !index ? "#7979db" : "#000000";
+      context.fillStyle = !index ? "#7979db" : "#000000";
 
-    context.beginPath();
-    context.fillRect(column * cellSize, row * cellSize, cellSize, cellSize);
-    context.stroke();
-  });
+      context.beginPath();
+      context.fillRect(column * cellSize, row * cellSize, cellSize, cellSize);
+      context.stroke();
+    });
 };
 
 const drawGameStatus = (gameWorld: World): void => {
@@ -65,7 +70,7 @@ const drawGameStatus = (gameWorld: World): void => {
   ) as HTMLLabelElement;
 
   gameStatus.textContent = gameWorld.status_text();
-}
+};
 
 const createGameWorld = (
   context: CanvasRenderingContext2D,
