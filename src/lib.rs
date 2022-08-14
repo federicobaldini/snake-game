@@ -141,7 +141,6 @@ impl World {
     match self.status {
       Some(GameStatus::Play) => {
         let initial_snake_body = self.snake.body.clone();
-        let snake_body_length = self.snake.body.len();
 
         match self.next_cell {
           Some(cell) => {
@@ -155,8 +154,12 @@ impl World {
         }
 
         // Move body cells
-        for i in 1..snake_body_length {
+        for i in 1..self.snake_length() {
           self.snake.body[i] = SnakeCell(initial_snake_body[i - 1].0)
+        }
+
+        if self.snake.body[1..self.snake_length()].contains(&self.snake.body[0]) {
+          self.status = Some(GameStatus::Lose);
         }
 
         if self.reward_cell == self.snake_head_index() {
