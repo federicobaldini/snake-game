@@ -88,13 +88,25 @@ const updateGameWorld = (
   updateTimeout: { timeout: NodeJS.Timeout }
 ): void => {
   const frame_per_second: number = 10;
+
   updateTimeout.timeout = setTimeout(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     gameWorld.move_snake();
     createGameWorld(context, gameWorld, cellSize, wasm);
-    requestAnimationFrame(() =>
-      updateGameWorld(canvas, context, cellSize, gameWorld, wasm, updateTimeout)
-    );
+    if (gameWorld.status() === 2) {
+      requestAnimationFrame(() =>
+        updateGameWorld(
+          canvas,
+          context,
+          cellSize,
+          gameWorld,
+          wasm,
+          updateTimeout
+        )
+      );
+    } else {
+      clearTimeout(updateTimeout.timeout);
+    }
   }, 1000 / frame_per_second);
 };
 
@@ -170,6 +182,7 @@ init().then((wasm: InitOutput) => {
         gameControlButton.textContent = "PAUSE!";
       } else {
         gameWorld.pause_game();
+        clearTimeout(updateTimeout.timeout);
         gameControlButton.textContent = "PLAY!";
       }
     });
