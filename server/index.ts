@@ -47,6 +47,7 @@ const drawSnake = (
     gameWorld.snake_length()
   );
 
+  // or .slice().reverse() instead of .filter()
   snakeCells
     .filter(
       (snakeCellIndex, index) =>
@@ -72,6 +73,14 @@ const drawGameStatus = (gameWorld: World): void => {
   gameStatus.textContent = gameWorld.status_text();
 };
 
+const drawGamePoints = (gameWorld: World): void => {
+  const gameStatus: HTMLLabelElement = document.getElementById(
+    "game-points"
+  ) as HTMLLabelElement;
+
+  gameStatus.textContent = String(gameWorld.points());
+};
+
 const createGameWorld = (
   context: CanvasRenderingContext2D,
   gameWorld: World,
@@ -82,6 +91,7 @@ const createGameWorld = (
   drawSnake(context, gameWorld, cellSize, wasm);
   drawReward(context, gameWorld, cellSize);
   drawGameStatus(gameWorld);
+  drawGamePoints(gameWorld);
 };
 
 const updateGameWorld = (
