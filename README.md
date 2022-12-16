@@ -1,6 +1,5 @@
 # snake-game
 
-About
 A web application (game) to play at snake, using TypeScript, Rust and WebAssembly.
 
 Credit: https://github.com/Jerga99 and https://www.udemy.com/course/rust-webassembly-with-js-ts-the-practical-guide
