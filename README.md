@@ -11,8 +11,6 @@ Credit: https://github.com/Jerga99 and https://www.udemy.com/course/rust-webasse
 
 ## Requirements
 
-wasm-pack build --target web
-
 To successful run this code, you need to have Rust and Cargo installed on your Machine.
 
 For the instalation guide [click here](https://www.rust-lang.org/learn/get-started).
