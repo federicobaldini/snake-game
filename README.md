@@ -28,7 +28,7 @@ Just clone the repo and use cargo to run the code as shown below
 Then to start the web application 
 
 ```bash
-    snake-game->$ cd server
+snake-game->$ cd server
 ```
 
 Install the dependencies:
